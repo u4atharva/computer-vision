@@ -10,12 +10,17 @@
 
 ## 📂 Current Projects
 
-### 1. Rubik's Cube Color Calibration (`SolveCube`)
+### 1. Virtual Air Canvas (`VirtualCanvas`)
+An interactive drawing application that uses your webcam to track your hand and draw lines directly on the screen! 
+- **Goal**: Let users paint in thin air by tracking the tip of their index finger. Top of the screen holds colors to switch between.
+- **Techniques Used**: MediaPipe Hand Landmarks (`hands.process`), OpenCV Drawing Utils, Queues to track line coordinates.
+
+### 2. Rubik's Cube Color Calibration (`SolveCube`)
 An OpenCV-based interactive utility designed to process images of a Rubik's Cube.
 - **Goal**: Tune and extract exact face colors dynamically using HSV masking before feeding the data into an automated solver algorithm.
 - **Techniques Used**: Real-time HSV Color Thresholding, Image manipulation, GUI trackbar listeners.
 
-### 2. Kociemba Algorithm Integration (`KociembaDemo`)
+### 3. Kociemba Algorithm Integration (`KociembaDemo`)
 A demonstration environment for the Kociemba's two-phase algorithm. This provides the mathematical backbone for deciphering a Rubik's cube from any state in a near-optimal number of moves. Intended to be used in tandem with the physical face color extraction process.
 
 ---
@@ -26,7 +31,8 @@ A demonstration environment for the Kociemba's two-phase algorithm. This provide
 Ensure you have Python installed along with `opencv-python`:
 
 ```bash
-pip install opencv-python
+pip install -r requirements.txt
+# (installs opencv-python, mediapipe, etc)
 ```
 
 **Running the Interactive Masker:**
