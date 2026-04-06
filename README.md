@@ -35,10 +35,20 @@ pip install -r requirements.txt
 # (installs opencv-python, mediapipe, etc)
 ```
 
-**Running the Interactive Masker:**
+**1. Running Virtual Air Canvas:**
+Navigate to `VirtualCanvas` and start the script.
+```bash
+cd VirtualCanvas
+python air_canvas.py
+```
+>**How to use**: Once open, point your right index finger at the camera. The boxes at the top of the video feed act as virtual buttons. Hover the tip of your index finger over "BLUE", "GREEN", "RED", or "YELLOW" to switch your active brush color. Hover over the "CLEAR" box to instantly erase the entire canvas.
+
+>**Troubleshooting Camera (macOS)**: If the script instantly crashes and logs an `OpenCV: camera failed to properly initialize` error, macOS strict security is blocking webcam access! To fix this, open **System Settings > Privacy & Security > Camera** on your Mac and ensure that your IDE (like PyCharm) or Terminal is toggled **ON**.
+
+**2. Running the Interactive Masker (Rubik's):**
 Navigate to `SolveCube` and run the vision script:
 ```bash
-cd ServeCube
+cd SolveCube
 python ProcessFace.py
 ```
 
