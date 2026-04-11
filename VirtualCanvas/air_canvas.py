@@ -1,7 +1,11 @@
 import cv2
 import numpy as np
 import mediapipe as mp
+import time
 from collections import deque
+
+# timing the closing gesture
+shaka_start_time = None
 
 # holding the points drawn by the user for different colors
 bpoints = [deque(maxlen=1024)]
@@ -78,12 +82,21 @@ while True:
                 
                 # Check for "shaka" / call me sign: thumb and pinky up, others down
                 if thumb_up and pinky_up and not index_up and not middle_up and not ring_up:
-                    cv2.putText(frame, "CLOSING APP...", (100, 250), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4, cv2.LINE_AA)
-                    cv2.imshow("Tracking", frame)
-                    cv2.waitKey(1500)
-                    cap.release()
-                    cv2.destroyAllWindows()
-                    exit()
+                    if shaka_start_time is None:
+                        shaka_start_time = time.time()
+                    
+                    elapsed_time = time.time() - shaka_start_time
+                    if elapsed_time >= 2.0:
+                        cv2.putText(frame, "CLOSING APP...", (100, 250), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4, cv2.LINE_AA)
+                        cv2.imshow("Tracking", frame)
+                        cv2.waitKey(1500)
+                        cap.release()
+                        cv2.destroyAllWindows()
+                        exit()
+                    else:
+                        cv2.putText(frame, f"HOLD TO CLOSE: {2.0 - elapsed_time:.1f}s", (80, 250), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 165, 255), 3, cv2.LINE_AA)
+                else:
+                    shaka_start_time = None
                 
                 if index_up:
                     # if finger is at the top of the screen where buttons are
@@ -125,6 +138,7 @@ while True:
             
     else:
         # no hand seen, append empty deque to break the line drawing
+        shaka_start_time = None
         bpoints.append(deque(maxlen=512))
         b_idx += 1
         gpoints.append(deque(maxlen=512))
