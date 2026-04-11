@@ -69,29 +69,43 @@ while True:
                 # index finger tip is landmark id 8
                 x1, y1 = lm_list[8][1], lm_list[8][2]
                 
-                # if finger is at the top of the screen where buttons are
-                if y1 <= 65:
-                    if 40 <= x1 <= 140: # hit clear button
-                        bpoints = [deque(maxlen=512)]
-                        gpoints = [deque(maxlen=512)]
-                        rpoints = [deque(maxlen=512)]
-                        ypoints = [deque(maxlen=512)]
-                        b_idx, g_idx, r_idx, y_idx = 0, 0, 0, 0
-                        canvas[67:, :, :] = 255 
-                    elif 160 <= x1 <= 255: colorIndex = 0
-                    elif 275 <= x1 <= 370: colorIndex = 1
-                    elif 390 <= x1 <= 485: colorIndex = 2
-                    elif 505 <= x1 <= 600: colorIndex = 3
+                # check if index finger is open (tip is higher than pip joint)
+                is_index_open = lm_list[8][2] < lm_list[6][2]
+                
+                if is_index_open:
+                    # if finger is at the top of the screen where buttons are
+                    if y1 <= 65:
+                        if 40 <= x1 <= 140: # hit clear button
+                            bpoints = [deque(maxlen=512)]
+                            gpoints = [deque(maxlen=512)]
+                            rpoints = [deque(maxlen=512)]
+                            ypoints = [deque(maxlen=512)]
+                            b_idx, g_idx, r_idx, y_idx = 0, 0, 0, 0
+                            canvas[67:, :, :] = 255 
+                        elif 160 <= x1 <= 255: colorIndex = 0
+                        elif 275 <= x1 <= 370: colorIndex = 1
+                        elif 390 <= x1 <= 485: colorIndex = 2
+                        elif 505 <= x1 <= 600: colorIndex = 3
+                    else:
+                        # just drawing
+                        if colorIndex == 0:
+                            bpoints[b_idx].appendleft((x1, y1))
+                        elif colorIndex == 1:
+                            gpoints[g_idx].appendleft((x1, y1))
+                        elif colorIndex == 2:
+                            rpoints[r_idx].appendleft((x1, y1))
+                        elif colorIndex == 3:
+                            ypoints[y_idx].appendleft((x1, y1))
                 else:
-                    # just drawing
-                    if colorIndex == 0:
-                        bpoints[b_idx].appendleft((x1, y1))
-                    elif colorIndex == 1:
-                        gpoints[g_idx].appendleft((x1, y1))
-                    elif colorIndex == 2:
-                        rpoints[r_idx].appendleft((x1, y1))
-                    elif colorIndex == 3:
-                        ypoints[y_idx].appendleft((x1, y1))
+                    # fist is closed (index finger not open), dont draw
+                    bpoints.append(deque(maxlen=512))
+                    b_idx += 1
+                    gpoints.append(deque(maxlen=512))
+                    g_idx += 1
+                    rpoints.append(deque(maxlen=512))
+                    r_idx += 1
+                    ypoints.append(deque(maxlen=512))
+                    y_idx += 1
                         
             # draw the landmarks on the video frame
             mpDraw.draw_landmarks(frame, handLM, mpHands.HAND_CONNECTIONS)
