@@ -46,6 +46,7 @@ python air_canvas.py
 >- **To Draw/Select**: Extend your index finger at the camera.
 >- **To Pause Drawing**: Make a closed fist (fold your index finger in) to move your hand around without leaving messy strokes.
 >- **Colors & Eraser**: Hover your extended finger over "BLUE", "GREEN", "RED", or "YELLOW" to switch brush colors. Hover over "CLEAR" to instantly erase your canvas.
+>- **To Exit App**: Show the "Shaka" / "Call Me" sign (only thumb and pinky extended upwards). The app will notify you on-screen and safely shut down.
 
 >**Troubleshooting Camera (macOS)**: If the script instantly crashes and logs an `OpenCV: camera failed to properly initialize` error, macOS strict security is blocking webcam access! To fix this, open **System Settings > Privacy & Security > Camera** on your Mac and ensure that your IDE (like PyCharm) or Terminal is toggled **ON**.
 

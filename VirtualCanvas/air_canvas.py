@@ -69,10 +69,23 @@ while True:
                 # index finger tip is landmark id 8
                 x1, y1 = lm_list[8][1], lm_list[8][2]
                 
-                # check if index finger is open (tip is higher than pip joint)
-                is_index_open = lm_list[8][2] < lm_list[6][2]
+                # identify which fingers are open (tip is higher than pip joint)
+                thumb_up = lm_list[4][2] < lm_list[3][2]
+                index_up = lm_list[8][2] < lm_list[6][2]
+                middle_up = lm_list[12][2] < lm_list[10][2]
+                ring_up = lm_list[16][2] < lm_list[14][2]
+                pinky_up = lm_list[20][2] < lm_list[18][2]
                 
-                if is_index_open:
+                # Check for "shaka" / call me sign: thumb and pinky up, others down
+                if thumb_up and pinky_up and not index_up and not middle_up and not ring_up:
+                    cv2.putText(frame, "CLOSING APP...", (100, 250), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4, cv2.LINE_AA)
+                    cv2.imshow("Tracking", frame)
+                    cv2.waitKey(1500)
+                    cap.release()
+                    cv2.destroyAllWindows()
+                    exit()
+                
+                if index_up:
                     # if finger is at the top of the screen where buttons are
                     if y1 <= 65:
                         if 40 <= x1 <= 140: # hit clear button
